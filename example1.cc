@@ -4,7 +4,7 @@
 #include <cdk.h>
 
 #define MATRIX_WIDTH 3
-#define MATRIX_HEIGHT 3
+#define MATRIX_HEIGHT 5
 #define BOX_WIDTH 15
 #define MATRIX_NAME_STRING "Test Matrix"
 
@@ -16,7 +16,7 @@ int main() {
 	CDKSCREEN *cdkscreen;
 	CDKMATRIX *myMatrix;
 
-	const char *rowTitles[MATRIX_HEIGHT+1] = {"R0","R1","R2","R3"};
+	const char *rowTitles[MATRIX_HEIGHT+1] = {"R0","R1","R2","R3","R4","R5"};
 	const char *columnTitles[MATRIX_WIDTH+1] = {"C0","C1","C2","C3"};
 	int boxWidths[MATRIX_WIDTH+1] = {BOX_WIDTH,BOX_WIDTH,BOX_WIDTH,BOX_WIDTH};
 	int boxTypes[MATRIX_WIDTH+1] = {vMIXED,vMIXED,vMIXED,vMIXED};
@@ -29,7 +29,7 @@ int main() {
 	initCDKColor();
 
 	// Create the Matrix
-	myMatrix = newCDKMatrix(	cdkscreen, CENTER, CENTER, MATRIX_WIDTH, MATRIX_HEIGHT, MATRIX_WIDTH, MATRIX_HEIGHT, MATRIX_NAME_STRING, (char **) columnTitles, (char **) rowTitles, boxWidths, boxTypes, 1, 1, ' ', ROW, true, true, false);
+	myMatrix = newCDKMatrix(	cdkscreen, CENTER, CENTER, MATRIX_HEIGHT, MATRIX_WIDTH, MATRIX_HEIGHT, MATRIX_WIDTH, MATRIX_NAME_STRING, (char **) rowTitles, (char **) columnTitles, boxWidths, boxTypes, 1, 1, ' ', ROW, true, true, false);
 
 	if (myMatrix == NULL) {
 		printf("ERROR: Failure to create matrix.\n");
@@ -46,6 +46,7 @@ int main() {
 	// To see results
 	sleep(10);
 
+	// Clean Exit
 	endCDK();
 
 	return 0;
