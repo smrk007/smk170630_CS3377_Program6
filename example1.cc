@@ -57,7 +57,7 @@ int main() {
 	}
 
 	// Display the Matrix
-	drawCDKMatrix(myMatrix, true);
+	// drawCDKMatrix(myMatrix, true);
 	
 	// Initializing the Binary File Stream
 	ifstream binInfile("cs3377.bin", ios::in | ios::binary);
@@ -77,17 +77,19 @@ int main() {
 	setCDKMatrixCell(myMatrix, 1, 2, versionNumber.str().c_str());
 	setCDKMatrixCell(myMatrix, 1, 3, numRecords.str().c_str());
 
-	for (int i = 2; i <= 5; i++) {
+	// Displaying Records 
+	
+	for (int i = 2; i <= 5 && i <= (int) myHeader->numRecords+1; i++) {
 		BinaryFileRecord *myRecord = new BinaryFileRecord();
 		binInfile.read((char*) myRecord, sizeof(BinaryFileRecord));
 
+		char str[2];
+		sprintf(str, "%d", myRecord->strLength);
 		stringstream strLength;
-		magicNumber << "strlen: " << myRecord->strLength;
-		stringstream StringBuffer;
-		versionNumber << myRecord->stringBuffer;
+		strLength << "strlen: " << str;
 
 		setCDKMatrixCell(myMatrix, i, 1, strLength.str().c_str());
-		setCDKMatrixCell(myMatrix, i, 2, StringBuffer.str().c_str());
+		setCDKMatrixCell(myMatrix, i, 2, myRecord->stringBuffer);
 	}
 	
 	// Display a message
