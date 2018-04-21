@@ -1,6 +1,6 @@
 # Sean Kennedy smk170630
 
-CXX = g++
+CXX = g++ -std=c++11 -g
 CPPFLAGS = -Wall -g -I /scratch/perkins/include/
 LDFLAGS = -L/scratch/perkins/lib/ -lcdk -lcurses
 

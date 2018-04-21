@@ -1,14 +1,34 @@
 // Sean Kennedy smk170630
 
+#include <cstdint>
+#include <fstream>
+#include <ios>
 #include <iostream>
+#include <sstream>
+#include <stdlib.h>
+#include <string>
 #include <cdk.h>
 
-#define MATRIX_WIDTH 3
+#define BOX_WIDTH 25
 #define MATRIX_HEIGHT 5
-#define BOX_WIDTH 15
-#define MATRIX_NAME_STRING "Test Matrix"
+#define MATRIX_NAME_STRING "Binary File Contents"
+#define MATRIX_WIDTH 3
+#define MAX_RECORD_STRING_LENGTH 25
 
 using namespace std;
+
+class BinaryFileHeader {
+public:
+	uint32_t magicNumber;
+	uint32_t versionNumber;
+	uint64_t numRecords;
+};
+
+class BinaryFileRecord{
+public:	
+	uint8_t strLength;
+	char stringBuffer[MAX_RECORD_STRING_LENGTH];
+};
 
 int main() {
 
@@ -38,9 +58,39 @@ int main() {
 
 	// Display the Matrix
 	drawCDKMatrix(myMatrix, true);
+	
+	// Initializing the Binary File Stream
+	ifstream binInfile("cs3377.bin", ios::in | ios::binary);
 
+	// Finding and Displaying the Header
+	BinaryFileHeader *myHeader = new BinaryFileHeader();
+	binInfile.read((char*) myHeader, sizeof(BinaryFileHeader));
+
+	stringstream magicNumber;
+	magicNumber << "Magic: " << "0x" << hex << myHeader->magicNumber;
+	stringstream versionNumber;
+	versionNumber << "Version: " << dec << myHeader->versionNumber;
+	stringstream numRecords;
+	numRecords << "NumRecords: " << myHeader->numRecords;
+
+	setCDKMatrixCell(myMatrix, 1, 1, magicNumber.str().c_str());
+	setCDKMatrixCell(myMatrix, 1, 2, versionNumber.str().c_str());
+	setCDKMatrixCell(myMatrix, 1, 3, numRecords.str().c_str());
+
+	for (int i = 2; i <= 5; i++) {
+		BinaryFileRecord *myRecord = new BinaryFileRecord();
+		binInfile.read((char*) myRecord, sizeof(BinaryFileRecord));
+
+		stringstream strLength;
+		magicNumber << "strlen: " << myRecord->strLength;
+		stringstream StringBuffer;
+		versionNumber << myRecord->stringBuffer;
+
+		setCDKMatrixCell(myMatrix, i, 1, strLength.str().c_str());
+		setCDKMatrixCell(myMatrix, i, 2, StringBuffer.str().c_str());
+	}
+	
 	// Display a message
-	setCDKMatrixCell(myMatrix, 2, 2, "Test Message");
 	drawCDKMatrix(myMatrix, true);
 
 	// To see results
